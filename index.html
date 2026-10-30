@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CandidTrack – Suivi de candidatures</title>
+  <meta name="description" content="CandidTrack : gérez et suivez vos candidatures d'emploi, de stage et d'alternance." />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- ===== Barre latérale (ordinateur) / barre du bas (mobile) ===== -->
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <span class="brand-logo">CT</span>
+      <span class="brand-name">CandidTrack</span>
+    </div>
+    <nav class="nav" id="nav">
+      <button class="nav-link active" data-section="dashboard" type="button">
+        <span class="nav-icon">📊</span><span class="nav-text">Tableau de bord</span>
+      </button>
+      <button class="nav-link" data-section="applications" type="button">
+        <span class="nav-icon">📁</span><span class="nav-text">Mes candidatures</span>
+      </button>
+      <button class="nav-link" data-section="add" type="button">
+        <span class="nav-icon">➕</span><span class="nav-text">Ajouter</span>
+      </button>
+    </nav>
+    <p class="sidebar-footer">Données enregistrées localement</p>
+  </aside>
+
+  <main class="main">
+    <!-- ===== Section : Tableau de bord ===== -->
+    <section class="section active" id="section-dashboard">
+      <header class="section-header">
+        <h1>Tableau de bord</h1>
+        <p class="subtitle">Vue d'ensemble de votre recherche</p>
+      </header>
+
+      <div class="stats">
+        <div class="stat-card">
+          <span class="stat-icon icon-blue">📋</span>
+          <div><p class="stat-label">Total</p><p class="stat-value" id="stat-total">0</p></div>
+        </div>
+        <div class="stat-card">
+          <span class="stat-icon icon-violet">✉️</span>
+          <div><p class="stat-label">Envoyées</p><p class="stat-value" id="stat-sent">0</p></div>
+        </div>
+        <div class="stat-card">
+          <span class="stat-icon icon-amber">🗓️</span>
+          <div><p class="stat-label">Entretiens</p><p class="stat-value" id="stat-interview">0</p></div>
+        </div>
+        <div class="stat-card">
+          <span class="stat-icon icon-green">✅</span>
+          <div><p class="stat-label">Acceptées</p><p class="stat-value" id="stat-accepted">0</p></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <h2>Candidatures récentes</h2>
+          <button class="btn btn-ghost" data-goto="applications" type="button">Tout voir →</button>
+        </div>
+        <ul class="recent-list" id="recent-list"></ul>
+        <p class="empty" id="recent-empty">Aucune candidature pour le moment. Ajoutez-en une pour commencer !</p>
+      </div>
+    </section>
+
+    <!-- ===== Section : Mes candidatures ===== -->
+    <section class="section" id="section-applications">
+      <header class="section-header">
+        <h1>Mes candidatures</h1>
+        <button class="btn btn-primary" data-goto="add" type="button">+ Nouvelle candidature</button>
+      </header>
+
+      <div class="toolbar card">
+        <input type="search" id="search-input" placeholder="Rechercher une entreprise ou un poste…" />
+        <select id="filter-status">
+          <option value="all">Tous les statuts</option>
+          <option>À préparer</option>
+          <option>Envoyée</option>
+          <option>Entretien</option>
+          <option>Acceptée</option>
+          <option>Refusée</option>
+        </select>
+        <select id="sort-date">
+          <option value="desc">Plus récentes d'abord</option>
+          <option value="asc">Plus anciennes d'abord</option>
+        </select>
+      </div>
+
+      <div class="card table-card">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Entreprise</th><th>Poste</th><th>Type</th><th>Date</th><th>Statut</th><th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="applications-body"></tbody>
+        </table>
+        <p class="empty" id="list-empty">Aucune candidature trouvée.</p>
+      </div>
+    </section>
+
+    <!-- ===== Section : Ajouter / modifier ===== -->
+    <section class="section" id="section-add">
+      <header class="section-header">
+        <h1 id="form-title">Ajouter une candidature</h1>
+      </header>
+
+      <form class="card form" id="application-form" novalidate>
+        <input type="hidden" id="app-id" />
+        <div class="form-grid">
+          <label>Nom de l'entreprise *
+            <input type="text" id="company" required />
+          </label>
+          <label>Intitulé du poste *
+            <input type="text" id="position" required />
+          </label>
+          <label>Type *
+            <select id="type" required>
+              <option>Emploi</option><option>Stage</option><option>Alternance</option>
+            </select>
+          </label>
+          <label>Date de candidature *
+            <input type="date" id="date" required />
+          </label>
+          <label>Statut *
+            <select id="status" required>
+              <option>À préparer</option><option>Envoyée</option><option>Entretien</option>
+              <option>Acceptée</option><option>Refusée</option>
+            </select>
+          </label>
+          <label>Lien vers l'offre
+            <input type="url" id="link" placeholder="https://…" />
+          </label>
+          <label class="full">Notes personnelles
+            <textarea id="notes" rows="4"></textarea>
+          </label>
+        </div>
+        <p class="form-error" id="form-error"></p>
+        <div class="form-actions">
+          <button type="button" class="btn btn-ghost" id="cancel-btn">Annuler</button>
+          <button type="submit" class="btn btn-primary" id="submit-btn">Enregistrer</button>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <!-- Notification -->
+  <div class="toast" id="toast"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
